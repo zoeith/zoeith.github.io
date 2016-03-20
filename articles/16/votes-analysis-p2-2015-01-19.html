@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-72429926-1', 'auto');
+  ga('send', 'pageview');
+
+  </script>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Votes and Spending, Part 2&#58;</br> Spending through the ages</title>
+  <meta name="description" content="I previously found that at large democratic city council candidates who spend more money in the cycle prior to the primary generally receive a larger fractio...">
+
+
+  <link rel="stylesheet" href="/css/tufte.css">
+
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+    <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="canonical" href="http://zoeith.com/articles/16/votes-analysis-p2-2015-01-19">
+  <link rel="alternate" type="application/rss+xml" title="Zoey S. Davidson" href="http://zoeith.com/feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+    <nav class="group">
+	<!--- <a href="/"><img class="badge" src="/assets/img/badge_1.png" alt="CH"></a> -->
+	
+		
+		    
+		      <a href="/">blog</a>
+		    
+	    
+  	
+		
+		    
+		      <a href="/about/">About</a>
+		    
+	    
+  	
+		
+  	
+	</nav>
+</header>
+
+    <article class="group">
+      <h1>Votes and Spending, Part 2&#58;</br> Spending through the ages</h1>
+<p class="subtitle">March 19, 2016</p>
+
+
+<p>I <a href="/articles/16/basic-vote-analysis-2015-01-13">previously</a> found that at large democratic city council candidates who spend more money in the cycle prior to the primary generally receive a larger fraction of votes <label for="spending-exception" class="margin-toggle"> ⊕</label><input type="checkbox" id="spending-exception" class="margin-toggle" /><span class="marginnote">With the exception of one candidate who received a large fraction of votes though he claimed to have no expenditures. We will find similar occurrences in this analysis </span>. Here I extend the same analysis to two additional city council election cycles for which I could easily acquire data. I find a similar pattern when particularly when standardized within year to account for campaign spending related inflation. Note, many regulatory changes occurred over the time span of the analysis.<br />
+<!--more--></p>
+
+<h2 id="voting-data-2007-2011-and-2015">Voting data, 2007, 2011, and 2015</h2>
+<p>We begin with loading and combining the voting data. At the end of this section we’ll have a list of the candidates grouped by election year with the number and percentage of votes they each got.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">urllib2</span>
+
+<span class="n">vote_url_2015</span> <span class="o">=</span> <span class="s">'http://www.philadelphiavotes.com/files/raw-data/2015_primary.csv'</span>
+<span class="n">vote_stream_2015</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">vote_url_2015</span><span class="p">)</span>
+<span class="n">primary_2015</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">vote_stream_2015</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s">','</span><span class="p">)</span>
+
+<span class="n">vote_url_2011</span> <span class="o">=</span> <span class="s">'http://www.philadelphiavotes.com/files/raw-data/2011_primary.csv'</span>
+<span class="n">vote_stream_2011</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">vote_url_2011</span><span class="p">)</span>
+<span class="n">primary_2011</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">vote_stream_2011</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s">','</span><span class="p">)</span>
+
+<span class="n">vote_url_2007</span> <span class="o">=</span> <span class="s">'http://www.philadelphiavotes.com/files/raw-data/2007_primary.csv'</span>
+<span class="n">vote_stream_2007</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">vote_url_2007</span><span class="p">)</span>
+<span class="n">primary_2007</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">vote_stream_2007</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s">','</span><span class="p">)</span></code></pre></figure>
+
+<p>First, I that the column names across the elections are the same. They differ in 2015, so I renamed the columns of that year to match the others. Then to each data frame I added a year column. I also checked the label for the At Large Democratic Council election and found it changed between 2007 and 2011.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">primary_2015</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s">'VOTE'</span><span class="p">:</span><span class="s">'VOTES'</span><span class="p">,</span><span class="s">'CANDIDATE'</span><span class="p">:</span><span class="s">'NAME'</span><span class="p">},</span><span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">primary_2007</span><span class="p">[</span><span class="s">'YEAR'</span><span class="p">]</span><span class="o">=</span><span class="mi">2007</span>
+<span class="n">primary_2011</span><span class="p">[</span><span class="s">'YEAR'</span><span class="p">]</span><span class="o">=</span><span class="mi">2011</span>
+<span class="n">primary_2015</span><span class="p">[</span><span class="s">'YEAR'</span><span class="p">]</span><span class="o">=</span><span class="mi">2015</span>
+<span class="n">office_str_2015</span> <span class="o">=</span> <span class="s">'COUNCIL AT LARGE-DEM'</span>
+<span class="n">office_str_2011</span> <span class="o">=</span> <span class="s">'COUNCIL AT LARGE-DEM'</span>
+<span class="n">office_str_2007</span> <span class="o">=</span> <span class="s">'COUNCIL AT LARGE-D'</span>
+<span class="n">primaries</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">primary_2007</span><span class="p">,</span><span class="n">primary_2011</span><span class="p">,</span><span class="n">primary_2015</span><span class="p">))</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">dem_council_primaries</span> <span class="o">=</span> <span class="n">primaries</span><span class="p">[</span><span class="n">primaries</span><span class="o">.</span><span class="n">OFFICE</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="n">office_str_2007</span><span class="p">,</span><span class="n">office_str_2011</span><span class="p">])]</span>
+<span class="n">cgroup</span> <span class="o">=</span> <span class="n">dem_council_primaries</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s">'YEAR'</span><span class="p">,</span><span class="s">'NAME'</span><span class="p">])</span>
+<span class="n">cgroup_sum</span> <span class="o">=</span> <span class="n">cgroup</span><span class="o">.</span><span class="nb">sum</span><span class="p">()</span>
+<span class="n">cgroup_sum</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s">'WARD'</span><span class="p">,</span><span class="s">'DIVISION'</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">tot_votes</span> <span class="o">=</span> <span class="n">dem_council_primaries</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s">'YEAR'</span><span class="p">)</span><span class="o">.</span><span class="nb">sum</span><span class="p">()[</span><span class="s">'VOTES'</span><span class="p">]</span>
+<span class="n">years</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2007</span><span class="p">,</span><span class="mi">2011</span><span class="p">,</span><span class="mi">2015</span><span class="p">]</span>
+<span class="n">vote_pcts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([(</span><span class="n">cgroup_sum</span><span class="p">[</span><span class="s">'VOTES'</span><span class="p">][</span><span class="n">year</span><span class="p">]</span><span class="o">/</span><span class="n">cgroup_sum</span><span class="p">[</span><span class="s">'VOTES'</span><span class="p">][</span><span class="n">year</span><span class="p">]</span><span class="o">.</span><span class="nb">sum</span><span class="p">())</span><span class="o">.</span><span class="n">values</span> <span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">years</span><span class="p">])</span>
+<span class="n">cgroup_sum</span><span class="p">[</span><span class="s">'VOTES_PCTS'</span><span class="p">]</span> <span class="o">=</span> <span class="n">vote_pcts</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">years</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Total number of votes in "</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">year</span><span class="p">)</span><span class="o">+</span><span class="s">": "</span> <span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">tot_votes</span><span class="p">[</span><span class="n">year</span><span class="p">]))</span></code></pre></figure>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Total number of votes in 2007: 709720
+Total number of votes in 2011: 477008
+Total number of votes in 2015: 644038
+</code></pre>
+</div>
+
+<p>With an incumbent mayor running for reelection in 2011, it’s not too surprising to find a lower turnout. Next, let’s collect and sort the finance data.</p>
+
+<h2 id="campaign-finance-data-2007-2011-and-2015">Campaign finance data, 2007, 2011, and 2015</h2>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">csv_dtype</span> <span class="o">=</span> <span class="p">{</span><span class="s">'EntityZip'</span> <span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+             <span class="s">'EmployerZip'</span><span class="p">:</span> <span class="nb">str</span><span class="p">}</span>
+
+<span class="n">data_url_2015</span> <span class="o">=</span> <span class="s">'ftp://ftp.phila-records.com/Year-to-Date</span><span class="si">%20</span><span class="s">Transaction</span><span class="si">%20</span><span class="s">Files/2015</span><span class="si">%20</span><span class="s">YTD/Explorer.Transactions.2015.YTD.txt'</span>
+<span class="n">data_stream_2015</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">data_url_2015</span><span class="p">)</span>
+<span class="c">#Year to date (YTD)</span>
+<span class="n">finance_2015</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_stream_2015</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s">'</span><span class="se">\t</span><span class="s">'</span><span class="p">,</span><span class="n">quotechar</span><span class="o">=</span><span class="s">'"'</span><span class="p">,</span>
+                      <span class="n">error_bad_lines</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">csv_dtype</span><span class="p">)</span>
+
+
+<span class="n">data_url_2011</span> <span class="o">=</span> <span class="s">'ftp://ftp.phila-records.com/Year-to-Date</span><span class="si">%20</span><span class="s">Transaction</span><span class="si">%20</span><span class="s">Files/2011</span><span class="si">%20</span><span class="s">YTD/Explorer.Transactions.2011.txt'</span>
+<span class="n">data_stream_2011</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">data_url_2011</span><span class="p">)</span>
+<span class="c">#Year to date (YTD)</span>
+<span class="n">finance_2011</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_stream_2011</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s">'</span><span class="se">\t</span><span class="s">'</span><span class="p">,</span><span class="n">quotechar</span><span class="o">=</span><span class="s">'"'</span><span class="p">,</span>
+                      <span class="n">error_bad_lines</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">csv_dtype</span><span class="p">)</span>
+
+<span class="n">data_url_2007</span> <span class="o">=</span> <span class="s">'ftp://ftp.phila-records.com/Year-to-Date</span><span class="si">%20</span><span class="s">Transaction</span><span class="si">%20</span><span class="s">Files/2007</span><span class="si">%20</span><span class="s">YTD/Explorer.Transactions.2007ytd.txt'</span>
+<span class="n">data_stream_2007</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">data_url_2007</span><span class="p">)</span>
+<span class="c">#Year to date (YTD)</span>
+<span class="n">finance_2007</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_stream_2007</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s">'</span><span class="se">\t</span><span class="s">'</span><span class="p">,</span><span class="n">quotechar</span><span class="o">=</span><span class="s">'"'</span><span class="p">,</span>
+                      <span class="n">error_bad_lines</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">csv_dtype</span><span class="p">)</span></code></pre></figure>
+
+<p>As before, I need to remove amended lines to cut back on counting duplicated entries.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">filter_amends</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="s">"""
+    df is a ytd data frame including amended reports.
+    This function filters out duplicate information in amendment stages and
+    keeps only the latest data.
+    Pseudocode:
+        -for each cycle check for each filer check if amended records
+            -if filer in cycle had an amended record get most recent subdate:
+                keep those lines
+            -if filer had no amendments in cycle keep those lines
+    returns a list of indices of lines in dataframe corresponding to latest
+    filing data
+    """</span>
+    <span class="n">indices_to_keep</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span><span class="n">dtype</span><span class="o">=</span><span class="s">'int64'</span><span class="p">)</span>
+    <span class="n">cycles</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Cycle</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cycles</span><span class="p">:</span>
+        <span class="n">filers</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">Cycle</span><span class="o">==</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">FilerName</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+        <span class="n">dfc</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">Cycle</span><span class="o">==</span><span class="n">c</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">filers</span><span class="p">:</span>
+            <span class="n">dfcf</span> <span class="o">=</span> <span class="n">dfc</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">dfc</span><span class="o">.</span><span class="n">FilerName</span><span class="o">==</span><span class="n">f</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">dfcf</span><span class="o">.</span><span class="n">Amended</span><span class="o">.</span><span class="nb">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s">'Y|y'</span><span class="p">,</span><span class="n">na</span><span class="o">=</span><span class="bp">False</span><span class="p">)):</span>
+                <span class="c">#print "amended: " + str(dfcf.SubDate.max())</span>
+                <span class="n">maxdate</span> <span class="o">=</span> <span class="n">dfcf</span><span class="o">.</span><span class="n">SubDate</span><span class="o">.</span><span class="nb">max</span><span class="p">()</span>
+                <span class="c">#print 'amended: '+str(dfcf.loc[dfcf.SubDate == maxdate].index)</span>
+                <span class="n">indices_to_keep</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">indices_to_keep</span><span class="p">,</span><span class="n">dfcf</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">dfcf</span><span class="o">.</span><span class="n">SubDate</span> <span class="o">==</span> <span class="n">maxdate</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c">#print "not amended"</span>
+                <span class="n">indices_to_keep</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">indices_to_keep</span><span class="p">,</span><span class="n">dfcf</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">indices_to_keep</span>
+
+
+<span class="n">finance_2015</span> <span class="o">=</span> <span class="n">finance_2015</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">filter_amends</span><span class="p">(</span><span class="n">finance_2015</span><span class="p">)]</span>
+<span class="n">finance_2011</span> <span class="o">=</span> <span class="n">finance_2011</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">filter_amends</span><span class="p">(</span><span class="n">finance_2011</span><span class="p">)]</span>
+<span class="n">finance_2007</span> <span class="o">=</span> <span class="n">finance_2007</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">filter_amends</span><span class="p">(</span><span class="n">finance_2007</span><span class="p">)]</span></code></pre></figure>
+
+<p>The finance data has matching columns for each year. As before, I use hand made tags based on unique values in the FilerName column and match those up to the candidate names from the voting data. This was a little tedious and is subject to the usual sorts of human error/inaccuracy. Even without those errors, the routing of money through PACs makes this especially difficult because it is hard to know from this data alone which candidate each PAC supported. For instance, an expense description of “media” or “consulting” or “GOTV” does not describe which candidate the PAC supported. Since I can not track down every political ad or GOTV worker, I restricted the tags to only committees and candidate names I can readily identify with a name on the ballot <label for="more-problems" class="margin-toggle"> ⊕</label><input type="checkbox" id="more-problems" class="margin-toggle" /><span class="marginnote">There are many other data problems too. Many PACs and candidates simply do not file. </span>.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">tags_base</span> <span class="o">=</span> <span class="s">'votes-analysis-p2-2015-01-19_files/'</span>
+<span class="n">tags_2015</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">tags_base</span><span class="o">+</span><span class="s">'2015_dem_council_names.csv'</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s">','</span><span class="p">)</span>
+<span class="n">tags_2015</span> <span class="o">=</span> <span class="n">tags_2015</span><span class="p">[</span><span class="n">tags_2015</span><span class="o">.</span><span class="n">Party</span><span class="o">==</span><span class="s">'Dem'</span><span class="p">]</span> <span class="c">#this tag file has extra info</span>
+<span class="n">tags_2011</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">tags_base</span><span class="o">+</span><span class="s">'2011_dem_council_names.csv'</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s">','</span><span class="p">)</span>
+<span class="n">tags_2007</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">tags_base</span><span class="o">+</span><span class="s">'2007_dem_council_names.csv'</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s">','</span><span class="p">)</span>
+<span class="n">dcc_finance_2015</span> <span class="o">=</span> <span class="n">finance_2015</span><span class="p">[</span><span class="n">finance_2015</span><span class="o">.</span><span class="n">FilerName</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">tags_2015</span><span class="o">.</span><span class="n">Filers</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">&amp;</span><span class="p">(</span><span class="n">finance_2015</span><span class="o">.</span><span class="n">Cycle</span><span class="o">==</span><span class="mi">3</span><span class="p">)]</span>
+<span class="n">dcc_finance_2011</span> <span class="o">=</span> <span class="n">finance_2011</span><span class="p">[</span><span class="n">finance_2011</span><span class="o">.</span><span class="n">FilerName</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">tags_2011</span><span class="o">.</span><span class="n">Filers</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">&amp;</span><span class="p">(</span><span class="n">finance_2011</span><span class="o">.</span><span class="n">Cycle</span><span class="o">==</span><span class="mi">3</span><span class="p">)]</span>
+<span class="n">dcc_finance_2007</span> <span class="o">=</span> <span class="n">finance_2007</span><span class="p">[</span><span class="n">finance_2007</span><span class="o">.</span><span class="n">FilerName</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">tags_2007</span><span class="o">.</span><span class="n">Filers</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">&amp;</span><span class="p">(</span><span class="n">finance_2007</span><span class="o">.</span><span class="n">Cycle</span><span class="o">==</span><span class="mi">3</span><span class="p">)]</span></code></pre></figure>
+
+<p>The cell above selects out only the cycle 3 data for those candidates/tags. The below cell selects only the expenditures.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">expenditures2015</span> <span class="o">=</span> <span class="n">dcc_finance_2015</span><span class="p">[</span><span class="n">dcc_finance_2015</span><span class="o">.</span><span class="n">DocType</span><span class="o">.</span><span class="nb">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s">'Expenditures'</span><span class="p">,</span><span class="n">na</span><span class="o">=</span><span class="bp">False</span><span class="p">)]</span>
+<span class="n">expenditures2011</span> <span class="o">=</span> <span class="n">dcc_finance_2011</span><span class="p">[</span><span class="n">dcc_finance_2011</span><span class="o">.</span><span class="n">DocType</span><span class="o">.</span><span class="nb">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s">'Expenditures'</span><span class="p">,</span><span class="n">na</span><span class="o">=</span><span class="bp">False</span><span class="p">)]</span>
+<span class="n">expenditures2007</span> <span class="o">=</span> <span class="n">dcc_finance_2007</span><span class="p">[</span><span class="n">dcc_finance_2007</span><span class="o">.</span><span class="n">DocType</span><span class="o">.</span><span class="nb">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s">'Expenditures'</span><span class="p">,</span><span class="n">na</span><span class="o">=</span><span class="bp">False</span><span class="p">)]</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">print</span> <span class="s">'Total spending by Dem city council candidates cycle 3 2007: '</span> <span class="o">+</span> \
+        <span class="nb">str</span><span class="p">(</span><span class="n">expenditures2007</span><span class="o">.</span><span class="n">Amount</span><span class="o">.</span><span class="nb">sum</span><span class="p">())</span>
+<span class="k">print</span> <span class="s">'Total spending by Dem city council candidates cycle 3 2011: '</span> <span class="o">+</span> \
+        <span class="nb">str</span><span class="p">(</span><span class="n">expenditures2011</span><span class="o">.</span><span class="n">Amount</span><span class="o">.</span><span class="nb">sum</span><span class="p">())</span>
+<span class="k">print</span> <span class="s">'Total spending by Dem city council candidates cycle 3 2015: '</span> <span class="o">+</span> \
+        <span class="nb">str</span><span class="p">(</span><span class="n">expenditures2015</span><span class="o">.</span><span class="n">Amount</span><span class="o">.</span><span class="nb">sum</span><span class="p">())</span></code></pre></figure>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Total spending by Dem city council candidates cycle 3 2007: 862083.07
+Total spending by Dem city council candidates cycle 3 2011: 979575.49
+Total spending by Dem city council candidates cycle 3 2015: 2675434.78
+</code></pre>
+</div>
+
+<p>Interestingly, more money was spent in the 2011 election than the 2007 election though fewer votes were cast.</p>
+
+<p>Below I create expenditure dataframes for each year with a new column that contains the name for that filer based on the corresponding name from the ballot.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">add_vote_name</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">tags</span><span class="p">):</span>
+    <span class="n">x</span><span class="p">[</span><span class="s">'VotesName'</span><span class="p">]</span><span class="o">=</span><span class="n">tags</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">tags</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">Filers</span><span class="o">.</span><span class="nb">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s">'FilerName'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">na</span><span class="o">=</span><span class="bp">False</span><span class="p">)]</span><span class="o">.</span><span class="n">VotesName</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">x</span>
+<span class="n">expenditures2015_vname</span> <span class="o">=</span> <span class="n">expenditures2015</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s">'FilerName'</span><span class="p">)</span><span class="o">.</span><span class="nb">apply</span><span class="p">(</span><span class="n">add_vote_name</span><span class="p">,</span> <span class="p">(</span><span class="n">tags_2015</span><span class="p">,))</span>
+<span class="n">expenditures2011_vname</span> <span class="o">=</span> <span class="n">expenditures2011</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s">'FilerName'</span><span class="p">)</span><span class="o">.</span><span class="nb">apply</span><span class="p">(</span><span class="n">add_vote_name</span><span class="p">,</span> <span class="p">(</span><span class="n">tags_2011</span><span class="p">,))</span>
+<span class="n">expenditures2007_vname</span> <span class="o">=</span> <span class="n">expenditures2007</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s">'FilerName'</span><span class="p">)</span><span class="o">.</span><span class="nb">apply</span><span class="p">(</span><span class="n">add_vote_name</span><span class="p">,</span> <span class="p">(</span><span class="n">tags_2007</span><span class="p">,))</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">dtsums_2015</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">expenditures2015_vname</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s">'VotesName'</span><span class="p">,</span><span class="s">'DocType'</span><span class="p">])[</span><span class="s">'Amount'</span><span class="p">]</span><span class="o">.</span><span class="nb">sum</span><span class="p">())</span>
+<span class="n">dtsums_2015</span><span class="p">[</span><span class="s">'YEAR'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2015</span>
+<span class="n">dtsums_2011</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">expenditures2011_vname</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s">'VotesName'</span><span class="p">,</span><span class="s">'DocType'</span><span class="p">])[</span><span class="s">'Amount'</span><span class="p">]</span><span class="o">.</span><span class="nb">sum</span><span class="p">())</span>
+<span class="n">dtsums_2011</span><span class="p">[</span><span class="s">'YEAR'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2011</span>
+<span class="n">dtsums_2007</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">expenditures2007_vname</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s">'VotesName'</span><span class="p">,</span><span class="s">'DocType'</span><span class="p">])[</span><span class="s">'Amount'</span><span class="p">]</span><span class="o">.</span><span class="nb">sum</span><span class="p">())</span>
+<span class="n">dtsums_2007</span><span class="p">[</span><span class="s">'YEAR'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2007</span></code></pre></figure>
+
+<p>The next cell is the big step of combining voter data and expenditure data. To the dataframe with voter percentages (<code class="highlighter-rouge">cgroup_sum</code>), I add the expenditure data. This is probably not the technically cleanest way to do this using Pandas.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">dtsums</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">dtsums_2015</span><span class="p">,</span><span class="n">dtsums_2011</span><span class="p">,</span><span class="n">dtsums_2007</span><span class="p">))</span>
+<span class="n">newdtsum</span> <span class="o">=</span> <span class="n">dtsums</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">exlist_year</span> <span class="o">=</span> <span class="n">cgroup_sum</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">years</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">newdtsum</span><span class="p">[</span><span class="n">newdtsum</span><span class="o">.</span><span class="n">YEAR</span><span class="o">==</span><span class="n">year</span><span class="p">]</span><span class="o">.</span><span class="n">VotesName</span><span class="p">):</span>
+        <span class="c">#if name in dtsums[:,'CFR - Schedule III - Statement of Expenditures']:</span>
+        <span class="n">exlist_year</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">cgroup_sum</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">YEAR</span><span class="o">==</span><span class="n">year</span><span class="p">)</span><span class="o">&amp;</span><span class="p">(</span><span class="n">cgroup_sum</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">NAME</span><span class="o">==</span><span class="n">name</span><span class="p">),</span><span class="s">'Expense'</span><span class="p">]</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">newdtsum</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">newdtsum</span><span class="o">.</span><span class="n">YEAR</span><span class="o">==</span><span class="n">year</span><span class="p">)</span><span class="o">&amp;</span><span class="p">(</span><span class="n">newdtsum</span><span class="o">.</span><span class="n">VotesName</span><span class="o">==</span><span class="n">name</span><span class="p">)]</span><span class="o">.</span><span class="n">Amount</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">exlist_year</span></code></pre></figure>
+
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>YEAR</th>
+      <th>NAME</th>
+      <th>VOTES</th>
+      <th>VOTES_PCTS</th>
+      <th>Expense</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2007</td>
+      <td>ANDREW   TOY</td>
+      <td>41654</td>
+      <td>0.058691</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2007</td>
+      <td>BENJAMIN   RAMOS</td>
+      <td>47343</td>
+      <td>0.066707</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2007</td>
+      <td>BILL   GREEN</td>
+      <td>62252</td>
+      <td>0.087713</td>
+      <td>310426.25</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2007</td>
+      <td>BLONDELL   REYNOLDS BROWN</td>
+      <td>51846</td>
+      <td>0.073051</td>
+      <td>46252.27</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2007</td>
+      <td>CARYN   HUNT</td>
+      <td>18723</td>
+      <td>0.026381</td>
+      <td>2424.00</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2007</td>
+      <td>DEREK S GREEN</td>
+      <td>30745</td>
+      <td>0.043320</td>
+      <td>1633.88</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>2007</td>
+      <td>HARRY   MASSELE</td>
+      <td>17102</td>
+      <td>0.024097</td>
+      <td>5548.00</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>2007</td>
+      <td>JAMES F KENNEY</td>
+      <td>95389</td>
+      <td>0.134404</td>
+      <td>60373.91</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>2007</td>
+      <td>JUAN F RAMOS</td>
+      <td>44205</td>
+      <td>0.062285</td>
+      <td>112865.97</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>2007</td>
+      <td>MACEO   CUMMINGS</td>
+      <td>9577</td>
+      <td>0.013494</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>2007</td>
+      <td>MARC   STIER</td>
+      <td>25078</td>
+      <td>0.035335</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>2007</td>
+      <td>MATT   RUBEN</td>
+      <td>19946</td>
+      <td>0.028104</td>
+      <td>32565.07</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>2007</td>
+      <td>MICHAEL K ELLIS</td>
+      <td>15254</td>
+      <td>0.021493</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>2007</td>
+      <td>RODNEY   LITTLE</td>
+      <td>9029</td>
+      <td>0.012722</td>
+      <td>3775.61</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>2007</td>
+      <td>SHARIF T STREET</td>
+      <td>47879</td>
+      <td>0.067462</td>
+      <td>78654.59</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>2007</td>
+      <td>T MILTON   STREET SR</td>
+      <td>10468</td>
+      <td>0.014749</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>2007</td>
+      <td>W WILSON   GOODE JR</td>
+      <td>79798</td>
+      <td>0.112436</td>
+      <td>49092.96</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>2007</td>
+      <td>WILLIAM K GREENLEE</td>
+      <td>63563</td>
+      <td>0.089561</td>
+      <td>141561.00</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>2007</td>
+      <td>WILSON   ALEXANDER</td>
+      <td>19807</td>
+      <td>0.027908</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>2007</td>
+      <td>Write In</td>
+      <td>62</td>
+      <td>0.000087</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>2011</td>
+      <td>ANDREW   TOY</td>
+      <td>39467</td>
+      <td>0.082739</td>
+      <td>194439.13</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>2011</td>
+      <td>BILL   GREEN</td>
+      <td>65034</td>
+      <td>0.136337</td>
+      <td>270335.06</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>2011</td>
+      <td>BLONDELL   REYNOLDS BROWN</td>
+      <td>66334</td>
+      <td>0.139063</td>
+      <td>117218.36</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>2011</td>
+      <td>EDWARD J NESMITH</td>
+      <td>16674</td>
+      <td>0.034955</td>
+      <td>100000.00</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>2011</td>
+      <td>HUMBERTO   PEREZ</td>
+      <td>11211</td>
+      <td>0.023503</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>2011</td>
+      <td>ISAIAH   THOMAS</td>
+      <td>31515</td>
+      <td>0.066068</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>2011</td>
+      <td>JAMES F KENNEY</td>
+      <td>46282</td>
+      <td>0.097026</td>
+      <td>145385.94</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>2011</td>
+      <td>JANIS E MANSON</td>
+      <td>8100</td>
+      <td>0.016981</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>2011</td>
+      <td>LAWRENCE P CLARK</td>
+      <td>11671</td>
+      <td>0.024467</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>2011</td>
+      <td>MICHAEL   JONES</td>
+      <td>23234</td>
+      <td>0.048708</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>2011</td>
+      <td>RALPH P BLAKNEY</td>
+      <td>10482</td>
+      <td>0.021974</td>
+      <td>4761.50</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>2011</td>
+      <td>SHERRIE   COHEN</td>
+      <td>44528</td>
+      <td>0.093349</td>
+      <td>96252.33</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>2011</td>
+      <td>W WILSON   GOODE JR</td>
+      <td>47225</td>
+      <td>0.099003</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>2011</td>
+      <td>WILLIAM K GREENLEE</td>
+      <td>55175</td>
+      <td>0.115669</td>
+      <td>50009.69</td>
+    </tr>
+    <tr>
+      <th>34</th>
+      <td>2011</td>
+      <td>Write In</td>
+      <td>76</td>
+      <td>0.000159</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>2015</td>
+      <td>ALLAN DOMB</td>
+      <td>57691</td>
+      <td>0.089577</td>
+      <td>1546447.86</td>
+    </tr>
+    <tr>
+      <th>36</th>
+      <td>2015</td>
+      <td>BLONDELL REYNOLDS BROWN</td>
+      <td>62922</td>
+      <td>0.097699</td>
+      <td>7500.20</td>
+    </tr>
+    <tr>
+      <th>37</th>
+      <td>2015</td>
+      <td>CARLA M CAIN</td>
+      <td>17115</td>
+      <td>0.026575</td>
+      <td>280.00</td>
+    </tr>
+    <tr>
+      <th>38</th>
+      <td>2015</td>
+      <td>DEREK S GREEN</td>
+      <td>68505</td>
+      <td>0.106368</td>
+      <td>92689.04</td>
+    </tr>
+    <tr>
+      <th>39</th>
+      <td>2015</td>
+      <td>ED NEILSON</td>
+      <td>40786</td>
+      <td>0.063329</td>
+      <td>60258.56</td>
+    </tr>
+    <tr>
+      <th>40</th>
+      <td>2015</td>
+      <td>FRANK RIZZO</td>
+      <td>26260</td>
+      <td>0.040774</td>
+      <td>12121.19</td>
+    </tr>
+    <tr>
+      <th>41</th>
+      <td>2015</td>
+      <td>HELEN GYM</td>
+      <td>49270</td>
+      <td>0.076502</td>
+      <td>225899.67</td>
+    </tr>
+    <tr>
+      <th>42</th>
+      <td>2015</td>
+      <td>ISAIAH THOMAS</td>
+      <td>48000</td>
+      <td>0.074530</td>
+      <td>107939.81</td>
+    </tr>
+    <tr>
+      <th>43</th>
+      <td>2015</td>
+      <td>JENNE AYERS</td>
+      <td>32637</td>
+      <td>0.050676</td>
+      <td>7979.35</td>
+    </tr>
+    <tr>
+      <th>44</th>
+      <td>2015</td>
+      <td>MARNIE AUMENT LOUGHREY</td>
+      <td>10890</td>
+      <td>0.016909</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>45</th>
+      <td>2015</td>
+      <td>PAUL STEINKE</td>
+      <td>37104</td>
+      <td>0.057612</td>
+      <td>147315.94</td>
+    </tr>
+    <tr>
+      <th>46</th>
+      <td>2015</td>
+      <td>SHERRIE COHEN</td>
+      <td>45847</td>
+      <td>0.071187</td>
+      <td>194089.34</td>
+    </tr>
+    <tr>
+      <th>47</th>
+      <td>2015</td>
+      <td>THOMAS WYATT</td>
+      <td>30310</td>
+      <td>0.047062</td>
+      <td>195789.44</td>
+    </tr>
+    <tr>
+      <th>48</th>
+      <td>2015</td>
+      <td>W WILSON GOODE JR</td>
+      <td>46555</td>
+      <td>0.072286</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>49</th>
+      <td>2015</td>
+      <td>WILLIAM K GREENLEE</td>
+      <td>50849</td>
+      <td>0.078953</td>
+      <td>76591.44</td>
+    </tr>
+    <tr>
+      <th>50</th>
+      <td>2015</td>
+      <td>WILSON ALEXANDER</td>
+      <td>19210</td>
+      <td>0.029827</td>
+      <td>532.94</td>
+    </tr>
+    <tr>
+      <th>51</th>
+      <td>2015</td>
+      <td>Write In</td>
+      <td>87</td>
+      <td>0.000135</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>From this it appears many candidates either did not file their campaign finances for the 3rd cycle or they did not report any expenses during that cycle. I will address that at the end of this post again, but for now those entries will get dropped.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">year</span><span class="p">,</span><span class="n">color</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">years</span><span class="p">,[</span><span class="s">'b'</span><span class="p">,</span><span class="s">'g'</span><span class="p">,</span><span class="s">'r'</span><span class="p">]):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">exlist_year</span><span class="p">[</span><span class="n">exlist_year</span><span class="o">.</span><span class="n">YEAR</span><span class="o">==</span><span class="n">year</span><span class="p">]</span><span class="o">.</span><span class="n">Expense</span><span class="p">),</span><span class="n">exlist_year</span><span class="p">[</span><span class="n">exlist_year</span><span class="o">.</span><span class="n">YEAR</span><span class="o">==</span><span class="n">year</span><span class="p">]</span><span class="o">.</span><span class="n">VOTES_PCTS</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="n">color</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">year</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">scatterpoints</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Total Candidate Spending vs. Vote </span><span class="si">%</span><span class="s">'</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'Log Candidate Spending (</span><span class="err">\</span><span class="s">$)'</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'Candidate Vote Percentage'</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s">'x'</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s">'both'</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s">'major'</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="/images/votes-analysis-p2-2015-01-19_files/votes-analysis-p2-2015-01-19_22_0.png" alt="png" /></p>
+
+<p>There’s a trend already, however to really compare data across years we can standardize the data within each year to get z scores.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">year</span><span class="p">,</span><span class="n">color</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">years</span><span class="p">,[</span><span class="s">'b'</span><span class="p">,</span><span class="s">'g'</span><span class="p">,</span><span class="s">'r'</span><span class="p">]):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">exlist_year</span><span class="p">[(</span><span class="n">exlist_year</span><span class="o">.</span><span class="n">YEAR</span><span class="o">==</span><span class="n">year</span><span class="p">)</span><span class="o">&amp;</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">exlist_year</span><span class="o">.</span><span class="n">Expense</span><span class="p">)]</span><span class="o">.</span><span class="n">Expense</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">exlist_year</span><span class="p">[(</span><span class="n">exlist_year</span><span class="o">.</span><span class="n">YEAR</span><span class="o">==</span><span class="n">year</span><span class="p">)</span><span class="o">&amp;</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">exlist_year</span><span class="o">.</span><span class="n">Expense</span><span class="p">)]</span><span class="o">.</span><span class="n">VOTES_PCTS</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="n">color</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">year</span><span class="p">),</span><span class="n">s</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">scatterpoints</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Total Candidate Spending vs. Vote </span><span class="si">%</span><span class="s">'</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'Standardized Log Candidate Spending (</span><span class="err">\</span><span class="s">$)'</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'Candidate Vote Percentage'</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s">'x'</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s">'both'</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s">'major'</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="/images/votes-analysis-p2-2015-01-19_files/votes-analysis-p2-2015-01-19_24_0.png" alt="png" /></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">print</span> <span class="s">'        |  scaled fit [m, b]     |   raw fit [m, b]:'</span>
+<span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">years</span><span class="p">:</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">exlist_year</span><span class="p">[(</span><span class="n">exlist_year</span><span class="o">.</span><span class="n">YEAR</span><span class="o">==</span><span class="n">year</span><span class="p">)</span><span class="o">&amp;</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">exlist_year</span><span class="o">.</span><span class="n">Expense</span><span class="p">)]</span><span class="o">.</span><span class="n">Expense</span><span class="p">))</span>
+    <span class="n">x2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">exlist_year</span><span class="p">[(</span><span class="n">exlist_year</span><span class="o">.</span><span class="n">YEAR</span><span class="o">==</span><span class="n">year</span><span class="p">)</span><span class="o">&amp;</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">exlist_year</span><span class="o">.</span><span class="n">Expense</span><span class="p">)]</span><span class="o">.</span><span class="n">Expense</span><span class="p">)</span>
+    <span class="k">print</span> <span class="nb">str</span><span class="p">(</span><span class="n">year</span><span class="p">)</span><span class="o">+</span> <span class="s">'    '</span> <span class="o">+</span> \
+        <span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">exlist_year</span><span class="p">[(</span><span class="n">exlist_year</span><span class="o">.</span><span class="n">YEAR</span><span class="o">==</span><span class="n">year</span><span class="p">)</span><span class="o">&amp;</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">exlist_year</span><span class="o">.</span><span class="n">Expense</span><span class="p">)]</span><span class="o">.</span><span class="n">VOTES_PCTS</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="o">+</span> \
+        <span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span><span class="n">exlist_year</span><span class="p">[(</span><span class="n">exlist_year</span><span class="o">.</span><span class="n">YEAR</span><span class="o">==</span><span class="n">year</span><span class="p">)</span><span class="o">&amp;</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">exlist_year</span><span class="o">.</span><span class="n">Expense</span><span class="p">)]</span><span class="o">.</span><span class="n">VOTES_PCTS</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span></code></pre></figure>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>        |  scaled fit [m, b]     |   raw fit [m, b]:
+2007    [ 0.02491769  0.06346129][ 0.03445275 -0.08916387]
+2011    [ 0.02566051  0.09013895][ 0.05030968 -0.1570854 ]
+2015    [ 0.01458749  0.06504785][ 0.0144761 -0.0011184]
+</code></pre>
+</div>
+
+<p>Scaling the data brings the fits more into line with each other across years. Interestingly, the returns to spending seem to be lowest this past year when overall spending grew by so much. Furthermore, a more complete model would encapsulate the fact that the sum of all candidate votes fraction must be 1.</p>
+
+<p>Finally, as mentioned before. Many candidates seem to not have listed any expenditures or even filed for the cycle. If we include their voter returns on the plots above by putting their percentages on the left y axis, then the model is clearly broken.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">year</span><span class="p">,</span><span class="n">color</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">years</span><span class="p">,[</span><span class="s">'b'</span><span class="p">,</span><span class="s">'g'</span><span class="p">,</span><span class="s">'r'</span><span class="p">]):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">exlist_year</span><span class="p">[(</span><span class="n">exlist_year</span><span class="o">.</span><span class="n">YEAR</span><span class="o">==</span><span class="n">year</span><span class="p">)</span><span class="o">&amp;</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">exlist_year</span><span class="o">.</span><span class="n">Expense</span><span class="p">)]</span><span class="o">.</span><span class="n">Expense</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">exlist_year</span><span class="p">[(</span><span class="n">exlist_year</span><span class="o">.</span><span class="n">YEAR</span><span class="o">==</span><span class="n">year</span><span class="p">)</span><span class="o">&amp;</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">exlist_year</span><span class="o">.</span><span class="n">Expense</span><span class="p">)]</span><span class="o">.</span><span class="n">VOTES_PCTS</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="n">color</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">year</span><span class="p">),</span><span class="n">s</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">exlist_year</span><span class="p">[(</span><span class="n">exlist_year</span><span class="o">.</span><span class="n">YEAR</span><span class="o">==</span><span class="n">year</span><span class="p">)</span><span class="o">&amp;</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">exlist_year</span><span class="o">.</span><span class="n">Expense</span><span class="p">)]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                <span class="n">exlist_year</span><span class="p">[(</span><span class="n">exlist_year</span><span class="o">.</span><span class="n">YEAR</span><span class="o">==</span><span class="n">year</span><span class="p">)</span><span class="o">&amp;</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">exlist_year</span><span class="o">.</span><span class="n">Expense</span><span class="p">)]</span><span class="o">.</span><span class="n">VOTES_PCTS</span><span class="p">,</span>
+                <span class="n">marker</span><span class="o">=</span><span class="s">'s'</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="n">color</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s">'NoExp '</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">year</span><span class="p">),</span><span class="n">s</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span><span class="n">clip_on</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">scatterpoints</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Total Candidate Spending vs. Vote </span><span class="si">%</span><span class="s">'</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'Standardized Log Candidate Spending (</span><span class="err">\</span><span class="s">$)'</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'Candidate Vote Percentage'</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s">'x'</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s">'both'</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s">'major'</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="/images/votes-analysis-p2-2015-01-19_files/votes-analysis-p2-2015-01-19_27_0.png" alt="png" /></p>
+
+
+
+    </article>
+    <span class="print-footer">Votes and Spending, Part 2&#58;</br> Spending through the ages - March 19, 2016 - Zoey S. Davidson</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li><a href="mailto:zoeith_@_zoeith.com"><span class="icon-mail"></span></a></li>    
+    
+      <li>
+        <a href="//scholar.google.com/citations?hl=en&user=tu9XJuEAAAAJ"><span class="icon-google-scholar"></span></a>
+      </li>
+    
+      <li>
+        <a href="//www.twitter.com/zoeith"><span class="icon-twitter"></span></a>
+      </li>
+    
+      <li>
+        <a href="//github.com/zoeith"><span class="icon-github"></span></a>
+      </li>
+    
+      <li>
+        <a href="/feed.xml"><span class="icon-feed"></span></a>
+      </li>
+      
+  </ul>
+<div class="credits">
+<span> ZOEY S. DAVIDSON &nbsp;&vert;&nbsp; 2016</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme </a> in <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+
+  </body>
+</html>
