@@ -1,0 +1,14 @@
+---
+layout: default
+title: Monolithic shape-programmable dielectric liquid crystal elastomer actuators
+modal-id: 2
+date: 2019-11-01
+img: dlcea.png
+alt: image-alt
+project-date: November 2019
+#client: Start Bootstrap
+category: Soft matter research
+description: Soft robotics may enable many new technologies in which humans and robots physically interact, yet the necessary high-performance soft actuators still do not exist. The optimal soft actuators need to be fast and forceful and have programmable shape changes. Furthermore, they should be energy efficient for untethered applications and easy to fabricate. Here, we combine desirable characteristics from two distinct active material systems&#58; fast and highly efficient actuation from dielectric elastomers and directed shape programmability from liquid crystal elastomers. Via a top-down photoalignment method, we program molecular alignment and localized giant elastic anisotropy into the liquid crystal elastomers. The linearly actuated liquid crystal elastomer monoliths achieve strain rates over 120% per second with an energy conversion efficiency of 20% while moving loads over 700 times the elastomer weight. The electric actuation mechanism offers unprecedented opportunities toward miniaturization with shape programmability, efficiency, and more degrees of freedom for applications in soft robotics and beyond.
+linktext: Sci. Adv. Vol. 5, no. 11, eaay0855
+link: "https://advances.sciencemag.org/content/5/11/eaay0855"
+---
