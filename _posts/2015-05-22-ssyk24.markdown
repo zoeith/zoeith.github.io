@@ -1,0 +1,13 @@
+---
+layout: default
+title: Chiral structures and defects of lyotropic chromonic liquid crystals induced by saddle-splay elasticity
+modal-id: 4
+date: 2015-05-22
+img: ssyk24_defects.png
+alt: image-alt
+project-date: May 2015
+category: Soft matter research
+description: An experimental and theoretical study of lyotropic chromonic liquid crystals (LCLCs) confined in cylinders with degenerate planar boundary conditions elucidates LCLC director configurations. When the Frank saddle-splay modulus is more than twice the twist modulus, the ground state adopts an inhomogeneous escaped-twisted configuration. Analysis of the configuration yields a large saddle-splay modulus, which violates Ericksen inequalities but not thermodynamic stability. Lastly, we observe point defects between opposite-handed domains, and we explain a preference for point defects over domain walls.
+linktext: Phys. Rev. E 91, 050501(R)
+link: "https://journals.aps.org/pre/abstract/10.1103/PhysRevE.91.050501"
+---

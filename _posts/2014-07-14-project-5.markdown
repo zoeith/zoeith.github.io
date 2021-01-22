@@ -1,11 +1,13 @@
 ---
 layout: default
+title: Deposition and drying dynamics of liquid crystal droplets
 modal-id: 5
-date: 2014-07-14
-img: safe.png
+date: 2017-05-30
+img: ssy_red_dot.png
 alt: image-alt
-project-date: April 2014
-client: Start Bootstrap
-category: Web Development
-description: Use this area of the page to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.
+project-date: May 2017
+category: Soft matter research
+description: Drop drying and deposition phenomena reveal a rich interplay of fundamental science and engineering, give rise to fascinating everyday effects (coffee rings), and influence technologies ranging from printing to genotyping. Here we investigate evaporation dynamics, morphology, and deposition patterns of drying lyotropic chromonic liquid crystal droplets. These drops differ from typical evaporating colloidal drops primarily due to their concentration-dependent isotropic, nematic, and columnar phases. Phase separation occurs during evaporation, and in the process creates surface tension gradients and significant density and viscosity variation within the droplet. As a result, the drying multiphase drops exhibit different convective currents, drop morphologies, and deposition patterns (coffee-rings).
+linktext: Nat. Commun. volume 8, 15642 
+link: "https://www.nature.com/articles/ncomms15642"
 ---

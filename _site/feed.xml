@@ -4,7 +4,7 @@
   <generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator>
   <link href="http://zsdavidson.com/feed.xml" rel="self" type="application/atom+xml" />
   <link href="http://zsdavidson.com/" rel="alternate" type="text/html" />
-  <updated>2021-01-20T22:42:34-05:00</updated>
+  <updated>2021-01-21T18:27:01-05:00</updated>
   <id>http://zsdavidson.com/</id>
 
   
@@ -88,11 +88,11 @@
     </entry>
   
     <entry>
-      <title type="html">Project 3</title>
-      <link href="http://zsdavidson.com/" rel="alternate" type="text/html" title="Project 3" />
-      <published>2014-07-16T00:00:00-04:00</published>
-      <updated>2014-07-16T00:00:00-04:00</updated>
-      <id>http://zsdavidson.com/project-3</id>
+      <title type="html">Heterogeneous Activation, Local Structure, and Softness in Supercooled Colloidal Liquids</title>
+      <link href="http://zsdavidson.com/" rel="alternate" type="text/html" title="Heterogeneous Activation, Local Structure, and Softness in Supercooled Colloidal Liquids" />
+      <published>2019-01-18T00:00:00-05:00</published>
+      <updated>2019-01-18T00:00:00-05:00</updated>
+      <id>http://zsdavidson.com/glassypNIPAMsoftness</id>
       <content type="html" xml:base="http://zsdavidson.com/"></content>
 
       
@@ -108,7 +108,7 @@
       </author>
 
       
-        <category term="Web Development" />
+        <category term="Soft matter research" />
       
 
       
@@ -122,78 +122,10 @@
     </entry>
   
     <entry>
-      <title type="html">Project 4</title>
-      <link href="http://zsdavidson.com/" rel="alternate" type="text/html" title="Project 4" />
-      <published>2014-07-15T00:00:00-04:00</published>
-      <updated>2014-07-15T00:00:00-04:00</updated>
-      <id>http://zsdavidson.com/project-4</id>
-      <content type="html" xml:base="http://zsdavidson.com/"></content>
-
-      
-      
-      
-      
-      
-
-      <author>
-          <name></name>
-        
-        
-      </author>
-
-      
-        <category term="Web Development" />
-      
-
-      
-
-      
-        <summary type="html"></summary>
-      
-
-      
-      
-    </entry>
-  
-    <entry>
-      <title type="html">Project 6</title>
-      <link href="http://zsdavidson.com/" rel="alternate" type="text/html" title="Project 6" />
-      <published>2014-07-15T00:00:00-04:00</published>
-      <updated>2014-07-15T00:00:00-04:00</updated>
-      <id>http://zsdavidson.com/project-6</id>
-      <content type="html" xml:base="http://zsdavidson.com/"></content>
-
-      
-      
-      
-      
-      
-
-      <author>
-          <name></name>
-        
-        
-      </author>
-
-      
-        <category term="Web Development" />
-      
-
-      
-
-      
-        <summary type="html"></summary>
-      
-
-      
-      
-    </entry>
-  
-    <entry>
-      <title type="html">Project 5</title>
-      <link href="http://zsdavidson.com/" rel="alternate" type="text/html" title="Project 5" />
-      <published>2014-07-14T00:00:00-04:00</published>
-      <updated>2014-07-14T00:00:00-04:00</updated>
+      <title type="html">Deposition and drying dynamics of liquid crystal droplets</title>
+      <link href="http://zsdavidson.com/" rel="alternate" type="text/html" title="Deposition and drying dynamics of liquid crystal droplets" />
+      <published>2017-05-30T00:00:00-04:00</published>
+      <updated>2017-05-30T00:00:00-04:00</updated>
       <id>http://zsdavidson.com/project-5</id>
       <content type="html" xml:base="http://zsdavidson.com/"></content>
 
@@ -210,7 +142,41 @@
       </author>
 
       
-        <category term="Web Development" />
+        <category term="Soft matter research" />
+      
+
+      
+
+      
+        <summary type="html"></summary>
+      
+
+      
+      
+    </entry>
+  
+    <entry>
+      <title type="html">Chiral structures and defects of lyotropic chromonic liquid crystals induced by saddle-splay elasticity</title>
+      <link href="http://zsdavidson.com/" rel="alternate" type="text/html" title="Chiral structures and defects of lyotropic chromonic liquid crystals induced by saddle-splay elasticity" />
+      <published>2015-05-22T00:00:00-04:00</published>
+      <updated>2015-05-22T00:00:00-04:00</updated>
+      <id>http://zsdavidson.com/ssyk24</id>
+      <content type="html" xml:base="http://zsdavidson.com/"></content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name></name>
+        
+        
+      </author>
+
+      
+        <category term="Soft matter research" />
       
 
       
