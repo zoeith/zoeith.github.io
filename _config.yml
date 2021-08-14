@@ -43,8 +43,9 @@ social:
     url: https://scholar.google.com/citations?user=tu9XJuEAAAAJ&hl=en
   - title: twitter
     url: http://twitter.com/DavidsonZoey
-  #- title: facebook
-  #  url:
+  - title: linkedin
+    url: https://www.linkedin.com/in/zsdavidson/
+
   #- title: stack-overflow
   #  url: http://stackoverflow.com/questions/tagged/jekyll
   #- title: bitbucket

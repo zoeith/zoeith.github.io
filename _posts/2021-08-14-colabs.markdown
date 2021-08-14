@@ -1,0 +1,20 @@
+---
+layout: default
+title: Collaborations, 2020-2021
+modal-id: 1
+date: 2021-08-14
+img: 2020-1colabs.png
+alt: image-alt
+project-date: 2020-2021
+#client: Start Bootstrap
+category: Soft matter research
+description: "I am fortunate to have been able to work with many great scientists and engineers. Clockwise from top left: <br>
+H. Shahsavan, et al., Bioinspired underwater locomotion of light-driven liquid crystal gels <a href=https://doi.org/10.1073/pnas.1917952117> Bioinspired underwater locomotion of light-driven liquid crystal gels </a>, 2020.
+<br> J. Zhang, Y. Guo, W. Hu, et al., <a href=https://doi.org/10.1002/adma.202006191> Liquid Crystal Elastomer-Based Magnetic Composite Films for Reconﬁgurable Shape-Morphing Soft Miniature Machines </a>, 2021.
+<br> U. Culha, et al., <a href=https://doi.org/10.1073/pnas.2001272117> Statistical reprogramming of macroscopic self-assembly with dynamic boundaries</a>, 2020.
+<br> A. Kotikian, et al., <a href=https://doi.org/10.1002/adma.202101814> Innervated, Self-Sensing Liquid Crystal Elastomer Actuators with Closed Loop Control</a>, 2021."
+
+
+#linktext: Phys. Rev. Mat. 4, 105601
+#link: "https://journals.aps.org/prmaterials/abstract/10.1103/PhysRevMaterials.4.105601"
+---

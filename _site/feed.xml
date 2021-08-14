@@ -4,7 +4,7 @@
   <generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator>
   <link href="http://zsdavidson.com/feed.xml" rel="self" type="application/atom+xml" />
   <link href="http://zsdavidson.com/" rel="alternate" type="text/html" />
-  <updated>2021-01-21T18:27:01-05:00</updated>
+  <updated>2021-08-14T17:17:58-04:00</updated>
   <id>http://zsdavidson.com/</id>
 
   
@@ -18,6 +18,40 @@
   
 
   
+  
+    <entry>
+      <title type="html">Collaborations, 2020-2021</title>
+      <link href="http://zsdavidson.com/" rel="alternate" type="text/html" title="Collaborations, 2020-2021" />
+      <published>2021-08-14T00:00:00-04:00</published>
+      <updated>2021-08-14T00:00:00-04:00</updated>
+      <id>http://zsdavidson.com/colabs</id>
+      <content type="html" xml:base="http://zsdavidson.com/"></content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name></name>
+        
+        
+      </author>
+
+      
+        <category term="Soft matter research" />
+      
+
+      
+
+      
+        <summary type="html"></summary>
+      
+
+      
+      
+    </entry>
   
     <entry>
       <title type="html">Twisting and untwisting of twisted nematic elastomers</title>

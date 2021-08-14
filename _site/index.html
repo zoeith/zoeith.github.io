@@ -58,6 +58,9 @@
                         <a href="#portfolio">Research</a>
                     </li>
                     <li class="page-scroll">
+                        <a href="#about">About</a>
+                    </li>
+                    <li class="page-scroll">
                         <a href="#news">news</a>
                     </li>
                     <li class="page-scroll">
@@ -73,44 +76,28 @@
         <!-- /.container-fluid -->
     </nav>
 
-    <!-- Header -->
-<header>
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-5 col-lg-offset-2">
-          <p> I was curious about the world around us so, I decided to study physics.
-            I like coffee a lot and think liquid crystals look pretty, so I focused on soft matter physics.
-            Then I felt it was urgent to more directly contribute back to society, so I started working with engineers.
-            Polymers, additive manufacturing, soft robots, electronics, automation, and other adjacent technologies are exciting areas with ongoing developments that hold promise for all of us.
-            Interested in the full stack: from fundamental physical principles to translating science from the bench to society.
-          </p>
-      </div>
-      <div class="col-lg-5">
-        <img class="img-responsive" src="img/profile_big.png" alt="profile-pic" style='width:75%; max-width: 350px;'/>
-      </div>
-      <div class="col-lg-12">
-        <!-- <img class="img-responsive" src="img/profile_big.png" alt="profile-pic" style='width:25%; max-width: 350px;'/> -->
-        <div class="intro-text">
-          <span class="name">Zoey S. Davidson</span>
-          <hr />
-          <span class="skills">Soft matter physics and engineering</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</header>
-
     
     <!-- Portfolio Grid Section -->
     <section id="portfolio">
         <div class="container portfolio-flex-grid">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h2>Portfolio</h2>
+                    <!-- <h2>Portfolio</h2>-->
                     <hr />
                 </div>
             </div>
             <div class="portfolio-flex-row">
+                
+                    <div class="portfolio-flex-item portfolio-item">
+                        <a href="#portfolioModal-1" class="portfolio-link" data-toggle="modal">
+                            <div class="caption">
+                                <div class="caption-content">
+                                    <i class="fa fa-search-plus fa-3x"></i>
+                                </div>
+                            </div>
+                            <img src="img/portfolio/2020-1colabs.png" class="img-responsive" alt="image-alt">
+                        </a>
+                    </div>
                 
                     <div class="portfolio-flex-item portfolio-item">
                         <a href="#portfolioModal-1" class="portfolio-link" data-toggle="modal">
@@ -168,7 +155,30 @@
                     </div>
                 
             </div>
+            <hr />
         </div>
+    </section>
+
+     <!-- About Section -->
+    <section class="success" id="about">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-5 col-lg-offset-2">
+              <p>
+                I study the physics of soft materials and their applications in new technologies.
+                Soft robotics, renewable materials, advanced manufacturing, laboratory automation,
+                and other soft matter adjacent fields are exciting rapidly developing areas that hold promise for all of us.
+                I am committed to science for the good of everyone and building an inclusive and equitable society.
+                <br>
+                Full stack scientist: from fundamental physical principles to translating science from the bench to society while educating future scientists.
+              </p>
+          </div>
+          <div class="col-lg-5">
+            <img class="img-responsive" src="img/profile_big.png" alt="profile-pic" style='width:75%; max-width: 350px;'/>
+          </div>
+        </div>
+        <hr />
+      </div>
     </section>
 
      <!-- News Section -->
@@ -270,6 +280,10 @@
                             </li>
 		                    
                             <li>
+                                <a href="https://www.linkedin.com/in/zsdavidson/" class="btn-social btn-outline"><i class="fa fa-fw fa-linkedin"></i></a>
+                            </li>
+		                    
+                            <li>
                                 <a href="http://github.com/zoeith" class="btn-social btn-outline"><i class="fa fa-fw fa-github"></i></a>
                             </li>
 		                    
@@ -302,6 +316,48 @@
 
      <!-- Portfolio Modals -->
  
+    <div class="portfolio-modal modal fade" id="portfolioModal-1" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+            <div class="close-modal" data-dismiss="modal">
+                <div class="lr">
+                    <div class="rl">
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2">
+                        <div class="modal-body">
+                            <h2>Collaborations, 2020-2021</h2>
+                            <hr />
+                            <img src="img/portfolio/2020-1colabs.png" class="img-responsive img-centered" alt="image-alt">
+                            
+                                <p>I am fortunate to have been able to work with many great scientists and engineers. Clockwise from top left: <br> H. Shahsavan, et al., Bioinspired underwater locomotion of light-driven liquid crystal gels <a href=https://doi.org/10.1073/pnas.1917952117> Bioinspired underwater locomotion of light-driven liquid crystal gels </a>, 2020. <br> J. Zhang, Y. Guo, W. Hu, et al., <a href=https://doi.org/10.1002/adma.202006191> Liquid Crystal Elastomer-Based Magnetic Composite Films for Reconﬁgurable Shape-Morphing Soft Miniature Machines </a>, 2021. <br> U. Culha, et al., <a href=https://doi.org/10.1073/pnas.2001272117> Statistical reprogramming of macroscopic self-assembly with dynamic boundaries</a>, 2020. <br> A. Kotikian, et al., <a href=https://doi.org/10.1002/adma.202101814> Innervated, Self-Sensing Liquid Crystal Elastomer Actuators with Closed Loop Control</a>, 2021.</p>
+                            
+                            <ul class="list-inline item-details">
+                                
+                                
+                                
+                                    <li>Date:
+                                        <strong>2020-2021
+                                        </strong>
+                                    </li>
+                                
+                                
+                                    <li>Category:
+                                        <strong>Soft matter research
+                                        </strong>
+                                    </li>
+                                
+                            </ul>
+                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="portfolio-modal modal fade" id="portfolioModal-1" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-content">
             <div class="close-modal" data-dismiss="modal">
